@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Argus SOC</title>
+<style>
+:root{--bg:#f2f2f2;--hd:#000;--pn:#fff;--ph:#f5f5f5;--tab:#1a1a1a;--tabon:#fff;--tx:#111;--mut:#666;--ln:#dcdcdc;--lk:#d71920;--ac:#d71920;--hdtx:#fff;--hdmut:#b5b5b5;--hdon:#2a2a2a;--cr:#d71920;--wa:#9b1b21;--ok:#6e6e6e;--un:#bdbdbd;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0a0a;--hd:#000;--pn:#171717;--ph:#222;--tab:#141414;--tabon:#222;--tx:#f2f2f2;--mut:#a0a0a0;--ln:#2e2e2e;--lk:#ff4d55;--ac:#e01b24;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0a0a0a;--hd:#000;--pn:#171717;--ph:#222;--tab:#141414;--tabon:#222;--tx:#f2f2f2;--mut:#a0a0a0;--ln:#2e2e2e;--lk:#ff4d55;--ac:#e01b24;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+.app{display:flex;min-height:100vh}
+.ic{width:52px;background:var(--hd);border-right:1px solid var(--ln);display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 0;position:sticky;top:0;height:100vh;flex:none}
+.ic .lg{width:26px;height:26px;border-radius:50%;background:var(--cr);margin-bottom:10px;position:relative}
+.ic .lg:after{content:"";position:absolute;inset:7px;border:2px solid #fff;border-radius:50%}
+.ic button{width:38px;height:38px;border:0;border-radius:8px;background:none;color:var(--mut);font-size:17px;cursor:pointer}
+.ic button:hover,.ic button.on{background:var(--tabon);color:var(--tx)}
+.mn{flex:1;min-width:0}
+.hd{background:var(--hd);padding:12px 18px;display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--ln)}
+.hd b{font-size:18px}.hd span{color:var(--mut);font-size:13px}
+.tabs{display:flex;background:var(--tab);overflow-x:auto;border-bottom:1px solid var(--ln)}
+.tabs button{border:0;background:none;color:var(--mut);padding:12px 18px;font:inherit;cursor:pointer;white-space:nowrap;border-right:1px solid var(--ln)}
+.tabs button.on{background:var(--tabon);color:var(--tx);font-weight:600}
+.pg{padding:14px 18px}
+.dt{display:flex;gap:6px;margin-bottom:12px}
+.dt span,.dt button{padding:8px 16px;background:var(--tabon);border:1px solid var(--ln);border-radius:6px 6px 0 0;color:var(--tx);font:inherit}
+.dt button{cursor:pointer;font-weight:700}
+.fb{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+select,.ap{background:var(--pn);color:var(--tx);border:1px solid var(--ln);border-radius:4px;padding:8px 10px;font:inherit}
+.ap{cursor:pointer;background:var(--ph)}
+.wg{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
+.w{background:var(--pn);border:1px solid var(--ln);border-radius:6px;padding:14px;min-width:0}
+.wh{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-weight:600}
+.wh .x{margin-left:auto;background:none;border:0;color:var(--mut);cursor:pointer;font-size:16px}
+.cnt{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:12px}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+.cr{background:var(--cr)}.wa{background:var(--wa)}.ok{background:var(--ok)}.un{background:var(--un)}
+.lk{color:var(--lk);font-weight:600;cursor:pointer}
+.lh{display:flex;justify-content:space-between;font-size:11px;color:var(--mut);text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.al{display:flex;gap:8px;align-items:center;padding:7px 0;cursor:pointer;font-size:13px}
+.al .nm{flex:1;color:var(--lk);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.al .ag{color:var(--mut);font-size:12px;flex:none}
+.pie{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.pie svg{width:150px;height:150px;flex:none}
+.lg2 div{margin:6px 0;display:flex;align-items:center;gap:4px}
+.lg2 b{margin-left:8px;color:var(--lk)}
+.kv{display:grid;grid-template-columns:90px 1fr;gap:8px;font-size:13px}.kv span{color:var(--mut);text-transform:uppercase;font-size:11px;font-weight:700}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th{text-align:left;font-size:11px;color:var(--mut);text-transform:uppercase;padding:9px 8px;border-bottom:1px solid var(--ln)}
+td{padding:10px 8px;border-bottom:1px solid var(--ln)}
+tr.row{cursor:pointer}tr.row:hover td{background:var(--ph)}
+.b{display:inline-block;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:700;color:#fff}
+.dr{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--pn);border-left:1px solid var(--ln);padding:calc(18px + env(safe-area-inset-top,0px)) 18px 18px;overflow:auto;transform:translateX(105%);transition:transform .25s;z-index:20;box-shadow:-8px 0 30px rgba(0,0,0,.35)}
+.dr.open{transform:none}
+.dr h2{margin:8px 0 4px;font-size:17px}.dr .xx{float:right;background:none;border:0;color:var(--mut);font-size:24px;cursor:pointer}
+.tl{border-left:2px solid var(--ln);margin:10px 0 14px 6px;padding-left:14px}
+.tl div{margin-bottom:12px;position:relative;font-size:13px}
+.tl div:before{content:"";position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--lk)}
+.tl small{display:block;color:var(--mut)}
+.act{display:flex;gap:8px;flex-wrap:wrap}
+.act button{flex:1;min-width:110px;padding:10px;border-radius:6px;border:1px solid var(--ln);background:var(--ph);color:var(--tx);cursor:pointer;font:inherit}
+.act button.p{background:var(--cr);border-color:var(--cr);color:#fff}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--tx);color:var(--pn);padding:10px 16px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:30}
+.toast.on{opacity:1}
+.in{background:var(--pn);color:var(--tx);border:1px solid var(--ln);border-radius:4px;padding:8px 10px;font:inherit;min-width:0}
+.chip{border:1px solid var(--ln);background:var(--ph);color:var(--tx);padding:5px 12px;border-radius:16px;font:inherit;font-size:12px;cursor:pointer}
+.chip.on{background:var(--lk);border-color:var(--lk);color:#fff}
+.sw{width:40px;height:22px;border-radius:12px;border:0;background:var(--un);position:relative;cursor:pointer;flex:none}
+.sw:after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s}
+.sw.on{background:var(--ok)}.sw.on:after{left:21px}
+.rm{background:none;border:0;color:var(--cr);cursor:pointer;font-size:16px}
+@media(max-width:700px){.ic{display:none}.pg{padding:12px}.hd{padding:10px 12px;flex-wrap:wrap;gap:2px 10px}.fb select,.fb .ap{flex:1 1 100%}}
+.hd,.ic{background:#000;color:#fff}
+.hd{border-bottom:3px solid var(--ac)}.hd b{color:#fff}.hd span{color:var(--hdmut)}
+.ic{border-right:1px solid #2a2a2a}
+.ic button{color:var(--hdmut)}
+.ic button:hover,.ic button.on{background:var(--hdon);color:#fff;box-shadow:inset 3px 0 0 var(--ac)}
+.tabs{background:var(--tab);border-bottom:1px solid #000}
+.tabs button{color:var(--hdmut);border-right:1px solid #000}
+.tabs button.on{background:#000;color:#fff;box-shadow:inset 0 3px 0 var(--ac)}
+.ap{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:600}
+.dt span{border-top:3px solid var(--ac)}
+.act button.p{background:var(--ac);border-color:var(--ac);color:#fff}
+.w{border-top:2px solid var(--ac)}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="ic"><div class="lg"></div>
+<button data-v="dash" class="on" title="Dashboard">◎</button><button data-v="alerts" title="Alertas">✕</button><button data-v="comps" title="Computadores">▣</button><button data-v="ev" title="Eventos">▤</button><button data-v="act" title="Ações">⚡</button><button data-v="pol" title="Políticas">⛨</button><button data-v="adm" title="Administração">☰</button></aside>
+<div class="mn">
+<div class="hd"><b>Argus SOC</b><span>Mini SIEM/XDR</span></div>
+<div class="tabs" id="tabs"></div>
+<div class="pg">
+<section id="v-dash">
+ <div class="dt"><span>Padrão</span><button id="add" aria-label="Novo painel">+</button></div>
+ <div class="fb">
+  <select id="fs"><option>Todos</option><option>Crítico</option><option>Aviso</option></select>
+  <select id="fp"><option value="24">Visão de 24 horas</option><option value="168" selected>Visão de 7 dias</option><option value="720">Visão de 30 dias</option></select>
+  <select id="fg"><option>Todos os computadores</option><option>Servidores</option><option>Estações</option></select>
+  <button class="ap" id="apply">▶ Aplicar filtro</button>
+ </div>
+ <div class="wg" id="wg"></div>
+</section>
+<section id="v-alerts" hidden><div class="w"><div class="wh">Alertas</div><div class="tw"><table><thead><tr><th>Severidade</th><th>Alerta</th><th>Computador</th><th>Idade</th><th>Status</th></tr></thead><tbody id="tba"></tbody></table></div></div></section>
+<section id="v-comps" hidden><div class="w"><div class="wh">Computadores</div><div class="tw"><table><thead><tr><th>Nome</th><th>Tipo</th><th>Status</th></tr></thead><tbody id="tbc"></tbody></table></div></div></section>
+<section id="v-act" hidden></section><section id="v-ev" hidden></section><section id="v-pol" hidden></section><section id="v-adm" hidden></section>
+</div></div></div>
+<aside class="dr" id="dr"></aside>
+<div class="toast" id="ts"></div>
+<script>
+var $=function(i){return document.getElementById(i)};
+var ST=["cr","wa","ok","un"],SN={cr:"Crítico",wa:"Aviso",ok:"Gerenciado",un:"Não gerenciado"},CL={cr:"#e5384d",wa:"#f58220",ok:"#1fb25a",un:"#8a8d93"};
+var N={cr:10,wa:19,ok:50,un:29},C=[];
+ST.forEach(function(s){for(var k=0;k<N[s];k++)C.push({s:s})});
+C.forEach(function(c,i){c.t=i%3===0?"Servidor":"Estação";c.n=(c.t==="Servidor"?"srv-":"wks-")+("00"+(i+1)).slice(-3)});
+var AL=[["Reconhecimento detectado: varredura TCP",0,"cr",22],["Reconhecimento detectado: rede interna",1,"wa",30],["Mecanismo de firewall offline",2,"cr",50],["Prevenção de intrusão offline",3,"cr",52],["Força bruta SSH detectada",4,"cr",6],["PowerShell com comando codificado",5,"wa",12],["Hash de ransomware bloqueado",6,"cr",70],["Novo administrador local criado",10,"wa",100],["Software de acesso remoto não autorizado",11,"wa",140],["Login fora do horário habitual",12,"wa",3],["Alteração de integridade de arquivos",13,"wa",200],["Agente desatualizado",14,"wa",400]].map(function(a,i){return{id:"AL-"+(2040+i),n:a[0],i:a[1],s:a[2],h:a[3],st:"Novo",ip:"10.0."+(i+2)+"."+(10+i*7)}});
+var F={s:"Todos",p:168,g:"Todos os computadores"},H={},V="dash";
+function toast(m){var t=$("ts");t.textContent=m;t.className="toast on";setTimeout(function(){t.className="toast"},2200)}
+function age(h){return h<24?h+" h":Math.floor(h/24)+(h<48?" dia":" dias")}
+function gok(c){return F.g==="Todos os computadores"||(F.g==="Servidores")===(c.t==="Servidor")}
+function alerts(){return AL.filter(function(a){return a.h<=F.p&&(F.s==="Todos"||SN[a.s]===F.s)&&gok(C[a.i])&&a.st!=="Fechado"}).sort(function(a,b){return a.h-b.h})}
+function pie(cn,tot){if(!tot)return'<circle cx="75" cy="75" r="70" fill="var(--ph)"/>';var a=-Math.PI/2,s="";
+ ST.forEach(function(k){if(!cn[k])return;var d=cn[k]/tot*2*Math.PI;
+  if(cn[k]===tot){s+='<circle cx="75" cy="75" r="70" fill="'+CL[k]+'"/>';return}
+  var x0=75+70*Math.cos(a),y0=75+70*Math.sin(a),x1=75+70*Math.cos(a+d),y1=75+70*Math.sin(a+d);
+  s+='<path d="M75 75L'+x0+' '+y0+'A70 70 0 '+(d>Math.PI?1:0)+' 1 '+x1+' '+y1+'Z" fill="'+CL[k]+'" stroke="var(--pn)" stroke-width="1"/>';a+=d});return s}
+function dash(){
+ var al=alerts(),cr=al.filter(function(a){return a.s==="cr"}).length,wa=al.length-cr,cn={cr:0,wa:0,ok:0,un:0},tot=0;
+ C.forEach(function(c){if(gok(c)){cn[c.s]++;tot++}});
+ var W={
+ al:['◬ Status de alertas','<div class="cnt"><span><i class="dot cr"></i>Crítico: <span class="lk" data-go="alerts">'+cr+'</span></span><span><i class="dot wa"></i>Aviso: <span class="lk" data-go="alerts">'+wa+'</span></span></div><div class="lh"><span>Últimos alertas</span><span>Idade</span></div>'+(al.slice(0,5).map(function(a){return'<div class="al" data-id="'+a.id+'"><i class="dot '+a.s+'" style="margin:0"></i><span class="nm">'+a.n+'</span><span class="ag">'+age(a.h)+'</span></div>'}).join("")||'<div class="ag">Nenhum alerta no filtro.</div>')],
+ pc:['▣ Status dos computadores','<div class="pie"><svg viewBox="0 0 150 150">'+pie(cn,tot)+'</svg><div class="lg2"><div class="lh"><span>Status</span></div>'+ST.map(function(k){return'<div><i class="dot" style="background:'+CL[k]+'"></i>'+SN[k]+'<b>'+cn[k]+'</b></div>'}).join("")+'</div></div>'],
+ ev:['▤ Eventos por hora','<svg viewBox="0 0 300 120" width="100%" height="120" preserveAspectRatio="none">'+[3,2,1,2,4,3,2,5,6,4,7,5,8,6,9,7,10,8,6,9,11,8,7,12].map(function(v,i){return'<rect x="'+(i*12.5+2)+'" y="'+(115-v*9)+'" width="9" height="'+v*9+'" rx="2" fill="var(--lk)" opacity="'+(0.4+v*0.05)+'"/>'}).join("")+'</svg><div class="ag" style="color:var(--mut);font-size:12px">Últimas 24 horas</div>'],
+ us:['☺ Usuário','<div class="kv"><span>Conta</span><b>4305812</b><span>Função</span><b>Analista SOC N1</b><span>Último login</span><b>Hoje, 09:12</b><span>Anterior</span><b>Ontem, 18:40</b></div><div style="margin-top:12px"><span class="lk" data-t="Edição de perfil em breve">Editar perfil</span></div>']};
+ $("wg").innerHTML=Object.keys(W).filter(function(k){return!H[k]}).map(function(k){return'<div class="w"><div class="wh">'+W[k][0]+'<button class="x" data-h="'+k+'" aria-label="Fechar widget">×</button></div>'+W[k][1]+'</div>'}).join("")}
+function listA(){$("tba").innerHTML=AL.slice().sort(function(a,b){return a.h-b.h}).map(function(a){return'<tr class="row" data-id="'+a.id+'"><td><span class="b '+a.s+'">'+SN[a.s]+'</span></td><td>'+a.n+'<div style="color:var(--mut);font-size:12px">'+a.id+'</div></td><td>'+C[a.i].n+'</td><td>'+age(a.h)+'</td><td>'+a.st+'</td></tr>'}).join("")}
+function listC(){$("tbc").innerHTML=C.map(function(c){return'<tr><td>'+c.n+'</td><td>'+c.t+'</td><td><i class="dot '+c.s+'"></i>'+SN[c.s]+'</td></tr>'}).join("")}
+function drawer(id){var a=AL.filter(function(x){return x.id===id})[0],c=C[a.i];
+ $("dr").innerHTML='<button class="xx" data-x="1" aria-label="Fechar">×</button><span class="b '+a.s+'">'+SN[a.s]+'</span><h2>'+a.n+'</h2><div style="color:var(--mut);font-size:12px">'+a.id+' · há '+age(a.h)+'</div>'+
+ '<div class="kv" style="margin:14px 0"><span>Computador</span><b>'+c.n+'</b><span>Tipo</span><b>'+c.t+'</b><span>IP</span><b>'+a.ip+'</b><span>Status</span><b>'+a.st+'</b></div>'+
+ '<div class="lh"><span>Linha do tempo</span></div><div class="tl"><div><small>há '+age(a.h)+'</small>Evento detectado pelo sensor</div><div><small>há '+age(a.h)+'</small>Correlacionado com outros eventos do host</div><div><small>agora</small>Aguardando triagem do analista</div></div>'+
+ '<div class="act"><button class="p" data-a="iso" data-id="'+id+'">Isolar host</button><button data-a="ip" data-id="'+id+'">Bloquear IP</button><button data-a="cl" data-id="'+id+'">Fechar alerta</button></div>';
+ $("dr").className="dr open"}
+function view(v){V=v;["dash","alerts","comps","act","ev","pol","adm"].forEach(function(k){$("v-"+k).hidden=k!==v});document.querySelectorAll(".ic button").forEach(function(b){b.classList.toggle("on",b.dataset.v===v)});
+ var T=[["dash","Dashboard"],["act","Ações"],["alerts","Alertas"],["ev","Eventos e relatórios"],["comps","Computadores"],["pol","Políticas"],["adm","Administração"]];
+ $("tabs").innerHTML=T.map(function(t){return'<button class="'+(t[0]===v?'on':'')+'" data-v="'+t[0]+'">'+t[1]+'</button>'}).join("");
+ if(v==="dash")dash();if(v==="alerts")listA();if(v==="comps")listC();if(v==="act")renderAct();if(v==="ev")renderEv();if(v==="pol")renderPol();if(v==="adm")renderAdm()}
+document.addEventListener("click",function(e){var t=e.target;
+ if(!t.closest(".dr")&&$("dr").className==="dr open"){$("dr").className="dr"}
+ var r=t.closest("[data-id]");if(r&&!t.dataset.a){drawer(r.dataset.id);return}
+ if(t.dataset.v){view(t.dataset.v);return}
+ if(t.dataset.go){view(t.dataset.go);return}
+ if(t.dataset.h){H[t.dataset.h]=1;dash();return}
+ if(t.dataset.t){toast(t.dataset.t);return}
+ if(t.dataset.x){$("dr").className="dr";return}
+ if(t.dataset.m){mod(t);return}
+ if(t.id==="add"){toast("Novo painel em breve");return}
+ if(t.id==="apply"){F={s:$("fs").value,p:+$("fp").value,g:$("fg").value};H={};dash();toast("Filtro aplicado");return}
+ var a=t.dataset.a;if(a){var x=AL.filter(function(z){return z.id===t.dataset.id})[0];
+  if(a==="iso"){x.st="Contido";C[x.i].s="ok";api("/api/alerts/"+x.id+"/isolate",{});toast("Host "+C[x.i].n+" isolado da rede")}
+  if(a==="ip")toast("IP "+x.ip+" bloqueado no firewall");
+  if(a==="cl"){x.st="Fechado";api("/api/alerts/"+x.id+"/close",{});toast("Alerta "+x.id+" fechado")}
+  drawer(x.id);if(V==="dash")dash();if(V==="alerts")listA()}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")$("dr").className="dr"});
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+var LOG=[],EF="Todos",TH=0,RT=90;
+var P=[["Firewall","Controle de tráfego de entrada e saída",1,"Prevenir"],["Prevenção de intrusão (IPS)","Bloqueia exploits conhecidos",1,"Prevenir"],["Anti-malware","Varredura em tempo real",1,"Prevenir"],["Monitor de integridade","Detecta alteração de arquivos críticos",0,"Detectar"],["Controle de aplicativos","Bloqueia software fora da lista",0,"Detectar"],["Inspeção de logs","Analisa logs do sistema",1,"Detectar"]].map(function(p){return{n:p[0],d:p[1],on:p[2],m:p[3]}});
+var U=[{n:"Ana Souza",r:"Administrador",on:1},{n:"Carlos Lima",r:"Analista SOC N2",on:1},{n:"Você",r:"Analista SOC N1",on:1}];
+function now(){return new Date().toLocaleTimeString("pt-BR")}
+function renderAct(){
+ if(!$("ah")){$("v-act").innerHTML='<div class="wg"><div class="w"><div class="wh">Nova ação de resposta</div><div class="kv" style="grid-template-columns:1fr;gap:6px"><span>Computador</span><select id="ah">'+C.map(function(c){return'<option>'+c.n+'</option>'}).join("")+'</select><span>Endereço IP</span><input class="in" id="aip" placeholder="Ex.: 185.220.101.4"></div><div class="act" style="margin-top:14px"><button class="p" data-m="iso">Isolar host</button><button data-m="blk">Bloquear IP</button><button data-m="scan">Varredura</button></div></div><div class="w" style="grid-column:1/-1"><div class="wh">Histórico de ações</div><div class="tw"><table><thead><tr><th>Hora</th><th>Ação</th><th>Alvo</th></tr></thead><tbody id="alog"></tbody></table></div></div></div>'}
+ $("alog").innerHTML=LOG.length?LOG.map(function(l){return'<tr><td>'+l[0]+'</td><td>'+l[1]+'</td><td>'+esc(l[2])+'</td></tr>'}).join(""):'<tr><td colspan="3" style="color:var(--mut)">Nenhuma ação executada.</td></tr>'}
+function renderEv(){
+ var E=[],X=[["Sistema","srv-001","Agente atualizado para a versão 20.0.1",8],["Política","wks-005","Firewall aplicado",15],["Autenticação","srv-004","Login administrativo bem-sucedido",5],["Sistema","wks-011","Reinício do sensor",26],["Autenticação","wks-008","3 falhas de login consecutivas",9],["Política","srv-007","IPS em modo prevenir",60]];
+ AL.forEach(function(a){E.push({h:a.h,t:"Alerta",o:C[a.i].n,m:a.n})});
+ X.forEach(function(x){E.push({h:x[3],t:x[0],o:x[1],m:x[2]})});
+ E.sort(function(a,b){return a.h-b.h});
+ var ty=["Todos","Alerta","Sistema","Política","Autenticação"];
+ $("v-ev").innerHTML='<div class="w"><div class="wh">Eventos<button class="ap" style="margin-left:auto" data-m="rep">Gerar relatório</button></div><div class="fb">'+ty.map(function(k){return'<button class="chip'+(k===EF?' on':'')+'" data-m="ef" data-f="'+k+'">'+k+'</button>'}).join("")+'</div><div class="tw"><table><thead><tr><th>Idade</th><th>Tipo</th><th>Origem</th><th>Mensagem</th></tr></thead><tbody>'+E.filter(function(e){return EF==="Todos"||e.t===EF}).map(function(e){return'<tr><td>'+age(e.h)+'</td><td>'+e.t+'</td><td>'+e.o+'</td><td>'+e.m+'</td></tr>'}).join("")+'</tbody></table></div></div><div class="w" id="repw" hidden style="margin-top:14px"><div class="wh">Relatório de segurança<button class="ap" style="margin-left:auto" data-m="cp">Copiar</button></div><pre id="rep" style="white-space:pre-wrap;margin:0;font:13px/1.5 ui-monospace,monospace"></pre></div>'}
+function report(){
+ var cn={cr:0,wa:0,ok:0,un:0};C.forEach(function(c){cn[c.s]++});
+ var op=AL.filter(function(a){return a.st!=="Fechado"}).sort(function(a,b){return a.h-b.h}),cr=op.filter(function(a){return a.s==="cr"}).length,off=P.filter(function(p){return!p.on}).map(function(p){return p.n});
+ var L=["RELATÓRIO DE SEGURANÇA","Gerado em: "+new Date().toLocaleString("pt-BR"),"","Computadores: "+C.length+" (Crítico "+cn.cr+", Aviso "+cn.wa+", Gerenciado "+cn.ok+", Não gerenciado "+cn.un+")","Alertas abertos: "+op.length+" (Crítico "+cr+", Aviso "+(op.length-cr)+")","","Principais alertas:"];
+ op.slice(0,5).forEach(function(a){L.push("- "+a.id+" "+a.n+" ("+C[a.i].n+", há "+age(a.h)+")")});
+ L.push("","Recomendações:","- Triar e isolar os hosts com alerta crítico","- Instalar sensor nos "+cn.un+" computadores não gerenciados");
+ if(off.length)L.push("- Revisar políticas desativadas: "+off.join(", "));
+ $("rep").textContent=L.join("\n");$("repw").hidden=false;$("repw").scrollIntoView({behavior:"smooth"})}
+function renderPol(){
+ $("v-pol").innerHTML='<div class="w"><div class="wh">Políticas de segurança</div>'+P.map(function(p,i){return'<div class="al" style="gap:12px;border-bottom:1px solid var(--ln);cursor:default"><div style="flex:1"><b>'+p.n+'</b><div style="color:var(--mut);font-size:12px">'+p.d+' · '+(p.on?C.length:0)+' computadores</div></div><button class="chip" data-m="pm" data-i="'+i+'">'+p.m+'</button><button class="sw'+(p.on?' on':'')+'" data-m="pt" data-i="'+i+'" aria-label="Ativar ou desativar"></button></div>'}).join("")+'</div>'}
+function renderAdm(){
+ $("v-adm").innerHTML='<div class="wg"><div class="w" style="grid-column:1/-1"><div class="wh">Usuários</div><div class="tw"><table><thead><tr><th>Nome</th><th>Função</th><th>Ativo</th><th></th></tr></thead><tbody>'+U.map(function(u,i){return'<tr><td>'+esc(u.n)+'</td><td>'+u.r+'</td><td><button class="sw'+(u.on?' on':'')+'" data-m="us" data-i="'+i+'" aria-label="Ativar ou desativar"></button></td><td>'+(u.n==="Você"?'':'<button class="rm" data-m="ur" data-i="'+i+'" aria-label="Remover">×</button>')+'</td></tr>'}).join("")+'</tbody></table></div><div class="fb" style="margin:12px 0 0"><input class="in" id="un" placeholder="Nome do usuário"><select id="urole"><option>Analista SOC N1</option><option>Analista SOC N2</option><option>Auditor</option><option>Administrador</option></select><button class="ap" data-m="ua">Adicionar</button></div></div><div class="w"><div class="wh">Preferências</div><div class="al" style="justify-content:space-between;cursor:default"><span>Tema</span><button class="chip" data-m="th">'+["Automático","Claro","Escuro"][TH]+'</button></div><div class="al" style="justify-content:space-between;cursor:default"><span>Retenção de logs</span><button class="chip" data-m="rt">'+RT+' dias</button></div></div></div>'}
+function mod(t){var m=t.dataset.m,i=+t.dataset.i;
+ if(m==="iso"||m==="scan"){var n=$("ah").value,c=C.filter(function(x){return x.n===n})[0];
+  if(m==="iso"){c.s="ok";LOG.unshift([now(),"Host isolado",n]);api("/api/actions/isolate",{host:n});toast("Host "+n+" isolado da rede")}else{LOG.unshift([now(),"Varredura iniciada",n]);api("/api/actions/scan",{host:n});toast("Varredura iniciada em "+n)}
+  renderAct();return}
+ if(m==="blk"){var ip=$("aip").value.trim(),ok=/^(\d{1,3}\.){3}\d{1,3}$/.test(ip)&&ip.split(".").every(function(o){return+o<=255});
+  if(!ok){toast("Informe um IPv4 válido");return}
+  LOG.unshift([now(),"IP bloqueado",ip]);api("/api/actions/block-ip",{ip:ip});toast("IP "+ip+" bloqueado no firewall");$("aip").value="";renderAct();return}
+ if(m==="ef"){EF=t.dataset.f;renderEv();return}
+ if(m==="rep"){report();return}
+ if(m==="cp"){var tx=$("rep").textContent;try{navigator.clipboard.writeText(tx).then(function(){toast("Relatório copiado")},function(){toast("Não foi possível copiar")})}catch(e){toast("Não foi possível copiar")}return}
+ if(m==="pt"){P[i].on=P[i].on?0:1;toast(P[i].n+(P[i].on?" ativada":" desativada"));renderPol();return}
+ if(m==="pm"){P[i].m=P[i].m==="Prevenir"?"Detectar":"Prevenir";renderPol();return}
+ if(m==="us"){U[i].on=U[i].on?0:1;renderAdm();return}
+ if(m==="ur"){toast(U[i].n+" removido");U.splice(i,1);renderAdm();return}
+ if(m==="ua"){var nm=$("un").value.trim();if(!nm){toast("Digite o nome");return}U.push({n:nm,r:$("urole").value,on:1});renderAdm();toast("Usuário adicionado");return}
+ if(m==="th"){TH=(TH+1)%3;var d=document.documentElement;if(TH===0)d.removeAttribute("data-theme");else d.setAttribute("data-theme",TH===1?"light":"dark");renderAdm();return}
+ if(m==="rt"){RT=RT===30?90:RT===90?180:30;renderAdm();toast("Retenção de logs: "+RT+" dias")}}
+function api(p,b){try{fetch(p,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(b)})}catch(e){}}
+fetch("/api/state").then(function(r){return r.json()}).then(function(d){C=d.computers;AL=d.alerts;P=d.policies;U=d.users;LOG=d.log;view("dash")}).catch(function(){view("dash")});
+</script>
+</body>
+</html>
