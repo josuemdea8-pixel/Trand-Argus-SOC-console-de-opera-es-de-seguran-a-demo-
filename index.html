@@ -86,31 +86,71 @@ tr.row{cursor:pointer}tr.row:hover td{background:var(--ph)}
 .dt span{border-top:3px solid var(--ac)}
 .act button.p{background:var(--ac);border-color:var(--ac);color:#fff}
 .w{border-top:2px solid var(--ac)}
+
+.dt{flex-wrap:wrap;align-items:flex-end}.dt button{cursor:pointer}.dt .on{border-top:3px solid var(--ac)}
+.dt .mn2{font-weight:500;font-size:12px;color:var(--mut);border-radius:6px;margin-left:4px}
+.fs{margin:-4px 0 14px;color:var(--mut);font-size:13px}.fs b{color:var(--tx)}.fs.fl{animation:fl .9s}
+@keyframes fl{0%{color:var(--ac);transform:translateX(8px)}100%{transform:none}}
+.ap{display:inline-flex;align-items:center;gap:8px}.ap:active{transform:scale(.97)}
+.sp{display:none;width:12px;height:12px;border:2px solid #fff6;border-top-color:#fff;border-radius:50%;animation:rot .6s linear infinite}.ld .sp{display:inline-block}
+@keyframes rot{to{transform:rotate(1turn)}}
+.w{transition:opacity .25s,filter .25s,transform .25s}
+.busy .w{position:relative;overflow:hidden;opacity:.45;filter:blur(1.5px);transform:scale(.985)}
+.busy .w:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(215,25,32,.28) 50%,transparent 70%);animation:sh .7s linear infinite}
+@keyframes sh{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.fx .w{animation:pop .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d,0ms)}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}}
+.fx .pie svg{animation:swp .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes swp{from{opacity:0;transform:rotate(-160deg) scale(.6)}}
+.fx .bar{transform-box:fill-box;transform-origin:bottom;animation:gr .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d,0ms)}
+@keyframes gr{from{transform:scaleY(0)}}
+.fx .al{animation:sl .4s both;animation-delay:var(--d,0ms)}
+@keyframes sl{from{opacity:0;transform:translateX(-12px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.ty{display:inline-flex;align-items:center;gap:6px;padding:2px 9px 2px 7px;border-radius:5px;font-size:12px;font-weight:600;white-space:nowrap}
+.ty.sv{background:var(--ac);color:#fff}.ty.ws{background:var(--ph);border:1px solid var(--ln)}
+.t1{display:inline-flex;vertical-align:middle;margin-right:6px;color:var(--mut);flex:none}.t1.sv{color:var(--lk)}
+.bulk{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;padding:8px 10px;border:1px dashed var(--ln);border-radius:6px}
+.bulk .n{margin-right:auto;font-weight:600}
+button:disabled{opacity:.4;cursor:not-allowed}
+tr.sel td{background:rgba(215,25,32,.09)}
+input[type=checkbox]{accent-color:var(--ac);width:16px;height:16px;cursor:pointer;flex:none}
+.mdl{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:14px}.mdl[hidden]{display:none}
+.bd{position:absolute;inset:0;background:rgba(0,0,0,.6)}
+.mb{position:relative;background:var(--pn);border:1px solid var(--ln);border-top:3px solid var(--ac);border-radius:8px;padding:18px;width:min(500px,100%);max-height:90vh;overflow:auto;animation:pop .25s both}
+.mb h2{margin:0 0 12px;font-size:17px}.mb .in,.mb select{width:100%;margin-bottom:10px}
+.ck{display:flex;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--ln);cursor:pointer;font-size:13px}
+.wb{display:grid;grid-template-columns:minmax(260px,.9fr) 1.4fr;gap:14px;align-items:start}
+@media(max-width:900px){.wb{grid-template-columns:1fr}}
+.cs{padding:10px;border:1px solid var(--ln);border-radius:6px;margin-bottom:8px;cursor:pointer}.cs:hover{background:var(--ph)}
+.cs.on{border-color:var(--ac);box-shadow:inset 3px 0 0 var(--ac)}.cs small{color:var(--mut);display:block;margin-top:3px}
+.wb textarea{width:100%;min-height:60px;margin:6px 0}
+.nt{padding:8px;background:var(--ph);border-radius:6px;margin:6px 0;font-size:13px}.nt small{color:var(--mut);display:block}
 </style>
 </head>
 <body>
 <div class="app">
 <aside class="ic"><div class="lg"></div>
-<button data-v="dash" class="on" title="Dashboard">◎</button><button data-v="alerts" title="Alertas">✕</button><button data-v="comps" title="Computadores">▣</button><button data-v="ev" title="Eventos">▤</button><button data-v="act" title="Ações">⚡</button><button data-v="pol" title="Políticas">⛨</button><button data-v="adm" title="Administração">☰</button></aside>
+<button data-v="dash" class="on" title="Dashboard">◎</button><button data-v="alerts" title="Alertas">✕</button><button data-v="wb" title="Workbench">◈</button><button data-v="comps" title="Computadores">▣</button><button data-v="ev" title="Eventos">▤</button><button data-v="act" title="Ações">⚡</button><button data-v="pol" title="Políticas">⛨</button><button data-v="adm" title="Administração">☰</button></aside>
 <div class="mn">
 <div class="hd"><b>Argus SOC</b><span>Mini SIEM/XDR</span></div>
 <div class="tabs" id="tabs"></div>
 <div class="pg">
 <section id="v-dash">
- <div class="dt"><span>Padrão</span><button id="add" aria-label="Novo painel">+</button></div>
+<div class="dt" id="dt"></div>
  <div class="fb">
   <select id="fs"><option>Todos</option><option>Crítico</option><option>Aviso</option></select>
   <select id="fp"><option value="24">Visão de 24 horas</option><option value="168" selected>Visão de 7 dias</option><option value="720">Visão de 30 dias</option></select>
-  <select id="fg"><option>Todos os computadores</option><option>Servidores</option><option>Estações</option></select>
-  <button class="ap" id="apply">▶ Aplicar filtro</button>
+<select id="fg"></select>
+  <button class="ap" id="apply"><i class="sp"></i>▶ Aplicar filtro</button>
  </div>
- <div class="wg" id="wg"></div>
+<div class="fs" id="fsum"></div><div class="wg" id="wg"></div>
 </section>
 <section id="v-alerts" hidden><div class="w"><div class="wh">Alertas</div><div class="tw"><table><thead><tr><th>Severidade</th><th>Alerta</th><th>Computador</th><th>Idade</th><th>Status</th></tr></thead><tbody id="tba"></tbody></table></div></div></section>
-<section id="v-comps" hidden><div class="w"><div class="wh">Computadores</div><div class="tw"><table><thead><tr><th>Nome</th><th>Tipo</th><th>Status</th></tr></thead><tbody id="tbc"></tbody></table></div></div></section>
-<section id="v-act" hidden></section><section id="v-ev" hidden></section><section id="v-pol" hidden></section><section id="v-adm" hidden></section>
+<section id="v-comps" hidden></section>
+<section id="v-wb" hidden></section><section id="v-act" hidden></section><section id="v-ev" hidden></section><section id="v-pol" hidden></section><section id="v-adm" hidden></section>
 </div></div></div>
-<aside class="dr" id="dr"></aside>
+<aside class="dr" id="dr"></aside><div class="mdl" id="md" hidden></div>
 <div class="toast" id="ts"></div>
 <script>
 var $=function(i){return document.getElementById(i)};
@@ -122,51 +162,162 @@ var AL=[["Reconhecimento detectado: varredura TCP",0,"cr",22],["Reconhecimento d
 var F={s:"Todos",p:168,g:"Todos os computadores"},H={},V="dash";
 function toast(m){var t=$("ts");t.textContent=m;t.className="toast on";setTimeout(function(){t.className="toast"},2200)}
 function age(h){return h<24?h+" h":Math.floor(h/24)+(h<48?" dia":" dias")}
-function gok(c){return F.g==="Todos os computadores"||(F.g==="Servidores")===(c.t==="Servidor")}
+function gok(c){return F.g==="Selecionados"?!!SEL[c.n]:F.g==="Todos os computadores"||(F.g==="Servidores")===(c.t==="Servidor")}
 function alerts(){return AL.filter(function(a){return a.h<=F.p&&(F.s==="Todos"||SN[a.s]===F.s)&&gok(C[a.i])&&a.st!=="Fechado"}).sort(function(a,b){return a.h-b.h})}
 function pie(cn,tot){if(!tot)return'<circle cx="75" cy="75" r="70" fill="var(--ph)"/>';var a=-Math.PI/2,s="";
  ST.forEach(function(k){if(!cn[k])return;var d=cn[k]/tot*2*Math.PI;
   if(cn[k]===tot){s+='<circle cx="75" cy="75" r="70" fill="'+CL[k]+'"/>';return}
   var x0=75+70*Math.cos(a),y0=75+70*Math.sin(a),x1=75+70*Math.cos(a+d),y1=75+70*Math.sin(a+d);
   s+='<path d="M75 75L'+x0+' '+y0+'A70 70 0 '+(d>Math.PI?1:0)+' 1 '+x1+' '+y1+'Z" fill="'+CL[k]+'" stroke="var(--pn)" stroke-width="1"/>';a+=d});return s}
-function dash(){
- var al=alerts(),cr=al.filter(function(a){return a.s==="cr"}).length,wa=al.length-cr,cn={cr:0,wa:0,ok:0,un:0},tot=0;
+function num(n){return'<span class="cn" data-n="'+n+'">'+n+'</span>'}
+function cnt(){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;document.querySelectorAll(".cn").forEach(function(e){var n=+e.dataset.n,t0=performance.now();(function f(t){var p=Math.min(1,(t-t0)/700);e.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0)})}
+function dash(an){
+ var al=alerts(),cr=al.filter(function(a){return a.s==="cr"}).length,wa=al.length-cr,cn={cr:0,wa:0,ok:0,un:0},tot=0,hc={},b=[],mx=1,k;
  C.forEach(function(c){if(gok(c)){cn[c.s]++;tot++}});
+ al.forEach(function(a){hc[a.i]=(hc[a.i]||0)+1});
+ for(k=0;k<24;k++)b.push(2+(k*7+3)%5);
+ al.forEach(function(a){b[23-Math.min(23,Math.floor(a.h/F.p*24))]+=3});b.forEach(function(v){mx=Math.max(mx,v)});
+ var top=Object.keys(hc).sort(function(x,y){return hc[y]-hc[x]}).slice(0,5),me=U.filter(function(u){return u.n==="Você"})[0]||{r:"Analista SOC N1"},ca=CS.filter(function(c){return c.st!=="Resolvido"});
  var W={
- al:['◬ Status de alertas','<div class="cnt"><span><i class="dot cr"></i>Crítico: <span class="lk" data-go="alerts">'+cr+'</span></span><span><i class="dot wa"></i>Aviso: <span class="lk" data-go="alerts">'+wa+'</span></span></div><div class="lh"><span>Últimos alertas</span><span>Idade</span></div>'+(al.slice(0,5).map(function(a){return'<div class="al" data-id="'+a.id+'"><i class="dot '+a.s+'" style="margin:0"></i><span class="nm">'+a.n+'</span><span class="ag">'+age(a.h)+'</span></div>'}).join("")||'<div class="ag">Nenhum alerta no filtro.</div>')],
- pc:['▣ Status dos computadores','<div class="pie"><svg viewBox="0 0 150 150">'+pie(cn,tot)+'</svg><div class="lg2"><div class="lh"><span>Status</span></div>'+ST.map(function(k){return'<div><i class="dot" style="background:'+CL[k]+'"></i>'+SN[k]+'<b>'+cn[k]+'</b></div>'}).join("")+'</div></div>'],
- ev:['▤ Eventos por hora','<svg viewBox="0 0 300 120" width="100%" height="120" preserveAspectRatio="none">'+[3,2,1,2,4,3,2,5,6,4,7,5,8,6,9,7,10,8,6,9,11,8,7,12].map(function(v,i){return'<rect x="'+(i*12.5+2)+'" y="'+(115-v*9)+'" width="9" height="'+v*9+'" rx="2" fill="var(--lk)" opacity="'+(0.4+v*0.05)+'"/>'}).join("")+'</svg><div class="ag" style="color:var(--mut);font-size:12px">Últimas 24 horas</div>'],
- us:['☺ Usuário','<div class="kv"><span>Conta</span><b>4305812</b><span>Função</span><b>Analista SOC N1</b><span>Último login</span><b>Hoje, 09:12</b><span>Anterior</span><b>Ontem, 18:40</b></div><div style="margin-top:12px"><span class="lk" data-t="Edição de perfil em breve">Editar perfil</span></div>']};
- $("wg").innerHTML=Object.keys(W).filter(function(k){return!H[k]}).map(function(k){return'<div class="w"><div class="wh">'+W[k][0]+'<button class="x" data-h="'+k+'" aria-label="Fechar widget">×</button></div>'+W[k][1]+'</div>'}).join("")}
-function listA(){$("tba").innerHTML=AL.slice().sort(function(a,b){return a.h-b.h}).map(function(a){return'<tr class="row" data-id="'+a.id+'"><td><span class="b '+a.s+'">'+SN[a.s]+'</span></td><td>'+a.n+'<div style="color:var(--mut);font-size:12px">'+a.id+'</div></td><td>'+C[a.i].n+'</td><td>'+age(a.h)+'</td><td>'+a.st+'</td></tr>'}).join("")}
-function listC(){$("tbc").innerHTML=C.map(function(c){return'<tr><td>'+c.n+'</td><td>'+c.t+'</td><td><i class="dot '+c.s+'"></i>'+SN[c.s]+'</td></tr>'}).join("")}
-function drawer(id){var a=AL.filter(function(x){return x.id===id})[0],c=C[a.i];
+ al:['◬ Status de alertas','<div class="cnt"><span><i class="dot cr"></i>Crítico: <span class="lk" data-go="alerts">'+num(cr)+'</span></span><span><i class="dot wa"></i>Aviso: <span class="lk" data-go="alerts">'+num(wa)+'</span></span></div><div class="lh"><span>Últimos alertas</span><span>Idade</span></div>'+(al.slice(0,5).map(function(a,i){return'<div class="al" style="--d:'+i*70+'ms" data-id="'+a.id+'"><i class="dot '+a.s+'" style="margin:0"></i><span class="nm">'+a.n+'</span><span class="ag">'+age(a.h)+'</span></div>'}).join("")||'<div class="ag">Nenhum alerta no filtro.</div>')],
+ pc:['▣ Status dos computadores','<div class="pie"><svg viewBox="0 0 150 150">'+pie(cn,tot)+'</svg><div class="lg2"><div class="lh"><span>Status</span></div>'+ST.map(function(k){return'<div><i class="dot" style="background:'+CL[k]+'"></i>'+SN[k]+'<b>'+num(cn[k])+'</b></div>'}).join("")+'</div></div>'],
+ ev:['▤ Eventos por hora','<svg viewBox="0 0 300 120" width="100%" height="120" preserveAspectRatio="none">'+b.map(function(v,i){var h=Math.round(v/mx*105);return'<rect class="bar" style="--d:'+i*22+'ms" x="'+(i*12.5+2)+'" y="'+(115-h)+'" width="9" height="'+h+'" rx="2" fill="var(--lk)" opacity="'+(0.4+v/mx*0.6).toFixed(2)+'"/>'}).join("")+'</svg><div style="color:var(--mut);font-size:12px">Últimos '+(F.p<48?F.p+" horas":F.p/24+" dias")+' · '+al.length+' alertas no período</div>'],
+ us:['☺ Usuário','<div class="kv"><span>Conta</span><b>4305812</b><span>Função</span><b>'+me.r+'</b><span>Último login</span><b>Hoje, 09:12</b><span>Anterior</span><b>Ontem, 18:40</b></div><div style="margin-top:12px"><span class="lk" data-m="pf">Editar perfil</span></div>'],
+ tp:['▦ Computadores com mais alertas',top.map(function(i,j){return'<div class="al" style="--d:'+j*70+'ms" data-id="'+al.filter(function(x){return x.i==i})[0].id+'">'+t1(C[i].t)+'<span class="nm">'+C[i].n+'</span><span class="ag">'+hc[i]+' alerta(s)</span></div>'}).join("")||'<div class="ag">Nenhum alerta no filtro.</div>'],
+ cs:['◈ Casos do Workbench','<div class="cnt">'+STS.map(function(s,j){return'<span><i class="dot '+["cr","wa","ok"][j]+'"></i>'+s+': <span class="lk" data-go="wb">'+num(CS.filter(function(c){return c.st===s}).length)+'</span></span>'}).join("")+'</div>'+(ca.slice(0,3).map(function(c,i){return'<div class="al" style="--d:'+i*70+'ms" data-m="wo" data-k="'+c.id+'"><i class="dot '+sevOf(c)+'" style="margin:0"></i><span class="nm">'+c.id+' · '+esc(c.n)+'</span><span class="ag">'+c.st+'</span></div>'}).join("")||'<div class="ag">Nenhum caso em aberto.</div>')],
+ lg:['⚡ Ações recentes',LOG.slice(0,5).map(function(l){return'<div class="al" style="cursor:default"><span class="ag">'+l[0]+'</span><span class="nm" style="color:var(--tx)">'+l[1]+'</span><span class="ag">'+esc(l[2])+'</span></div>'}).join("")||'<div class="ag">Nenhuma ação executada.</div>']};
+ var ks=DB[DI].w.filter(function(k){return W[k]}),g=$("wg"),fs=$("fsum");
+ g.innerHTML=ks.length?ks.map(function(k,i){return'<div class="w" style="--d:'+i*80+'ms"><div class="wh">'+W[k][0]+'<button class="x" data-h="'+k+'" aria-label="Fechar widget">×</button></div>'+W[k][1]+'</div>'}).join(""):'<div class="w">Este painel não tem widgets. Use Widgets para adicionar.</div>';
+ fs.innerHTML='Exibindo <b>'+num(al.length)+'</b> alertas em <b>'+num(tot)+'</b> computadores · '+(F.s==="Todos"?"todas as severidades":F.s.toLowerCase())+' · '+(F.p<48?F.p+" horas":F.p/24+" dias")+' · '+(F.g==="Selecionados"?"hosts selecionados":F.g.toLowerCase());
+ g.classList.remove("busy","fx");
+ if(an){void g.offsetWidth;g.classList.add("fx");fs.classList.remove("fl");void fs.offsetWidth;fs.classList.add("fl")}
+ cnt()}
+function applyF(){var b=$("apply");if(b.disabled)return;b.disabled=true;b.classList.add("ld");$("wg").classList.add("busy");
+ setTimeout(function(){F={s:$("fs").value,p:+$("fp").value,g:$("fg").value};dash(1);b.disabled=false;b.classList.remove("ld");toast("Filtro aplicado: "+alerts().length+" alertas")},750)}
+function fgo(){var n=Object.keys(SEL).length,o=["Todos os computadores","Servidores","Estações"];if(n)o.push("Selecionados");else if(F.g==="Selecionados")F.g=o[0];
+ $("fg").innerHTML=o.map(function(x){return'<option value="'+x+'">'+(x==="Selecionados"?"Selecionados ("+n+")":x)+'</option>'}).join("");$("fg").value=F.g;$("fs").value=F.s;$("fp").value=F.p}
+function dtabs(){$("dt").innerHTML=DB.map(function(d,i){return'<button class="'+(i===DI?'on':'')+'" data-m="dp" data-i="'+i+'">'+esc(d.n)+'</button>'}).join("")+'<button id="add" aria-label="Novo painel" title="Novo painel">+</button><button class="mn2" data-m="pe">Widgets</button>'+(DI?'<button class="mn2" data-m="pd">Excluir painel</button>':'')}
+function listA(){$("tba").innerHTML=AL.slice().sort(function(a,b){return a.h-b.h}).map(function(a){return'<tr class="row" data-id="'+a.id+'"><td><span class="b '+a.s+'">'+SN[a.s]+'</span></td><td>'+a.n+'<div style="color:var(--mut);font-size:12px">'+a.id+'</div></td><td>'+t1(C[a.i].t)+C[a.i].n+'</td><td>'+age(a.h)+'</td><td>'+a.st+'</td></tr>'}).join("")}
+function drawer(id){var a=aby(id),c=C[a.i],w=caseOf(id);
  $("dr").innerHTML='<button class="xx" data-x="1" aria-label="Fechar">×</button><span class="b '+a.s+'">'+SN[a.s]+'</span><h2>'+a.n+'</h2><div style="color:var(--mut);font-size:12px">'+a.id+' · há '+age(a.h)+'</div>'+
- '<div class="kv" style="margin:14px 0"><span>Computador</span><b>'+c.n+'</b><span>Tipo</span><b>'+c.t+'</b><span>IP</span><b>'+a.ip+'</b><span>Status</span><b>'+a.st+'</b></div>'+
+ '<div class="kv" style="margin:14px 0"><span>Computador</span><b>'+c.n+'</b><span>Tipo</span><b>'+ti(c.t)+'</b><span>IP</span><b>'+a.ip+'</b><span>Status</span><b>'+a.st+'</b><span>Caso</span><b>'+(w?w.id:"Nenhum")+'</b></div>'+
  '<div class="lh"><span>Linha do tempo</span></div><div class="tl"><div><small>há '+age(a.h)+'</small>Evento detectado pelo sensor</div><div><small>há '+age(a.h)+'</small>Correlacionado com outros eventos do host</div><div><small>agora</small>Aguardando triagem do analista</div></div>'+
- '<div class="act"><button class="p" data-a="iso" data-id="'+id+'">Isolar host</button><button data-a="ip" data-id="'+id+'">Bloquear IP</button><button data-a="cl" data-id="'+id+'">Fechar alerta</button></div>';
+ '<div class="act"><button class="p" data-a="iso" data-id="'+id+'">Isolar host</button><button data-a="ip" data-id="'+id+'">Bloquear IP</button><button data-a="cl" data-id="'+id+'">Fechar alerta</button><button data-a="wb" data-id="'+id+'">'+(w?"Abrir no Workbench":"Enviar ao Workbench")+'</button></div>';
  $("dr").className="dr open"}
-function view(v){V=v;["dash","alerts","comps","act","ev","pol","adm"].forEach(function(k){$("v-"+k).hidden=k!==v});document.querySelectorAll(".ic button").forEach(function(b){b.classList.toggle("on",b.dataset.v===v)});
- var T=[["dash","Dashboard"],["act","Ações"],["alerts","Alertas"],["ev","Eventos e relatórios"],["comps","Computadores"],["pol","Políticas"],["adm","Administração"]];
+function view(v){V=v;["dash","alerts","wb","comps","act","ev","pol","adm"].forEach(function(k){$("v-"+k).hidden=k!==v});document.querySelectorAll(".ic button").forEach(function(b){b.classList.toggle("on",b.dataset.v===v)});
+ var T=[["dash","Dashboard"],["act","Ações"],["alerts","Alertas"],["wb","Workbench"],["ev","Eventos e relatórios"],["comps","Computadores"],["pol","Políticas"],["adm","Administração"]];
  $("tabs").innerHTML=T.map(function(t){return'<button class="'+(t[0]===v?'on':'')+'" data-v="'+t[0]+'">'+t[1]+'</button>'}).join("");
- if(v==="dash")dash();if(v==="alerts")listA();if(v==="comps")listC();if(v==="act")renderAct();if(v==="ev")renderEv();if(v==="pol")renderPol();if(v==="adm")renderAdm()}
-document.addEventListener("click",function(e){var t=e.target;
- if(!t.closest(".dr")&&$("dr").className==="dr open"){$("dr").className="dr"}
- var r=t.closest("[data-id]");if(r&&!t.dataset.a){drawer(r.dataset.id);return}
+ if(v==="dash"){dtabs();fgo();dash(1)}if(v==="alerts")listA();if(v==="comps")renderComps();if(v==="wb")renderWb();if(v==="act")renderAct();if(v==="ev")renderEv();if(v==="pol")renderPol();if(v==="adm")renderAdm()}
+document.addEventListener("click",function(e){var t=e.target.closest("[data-v],[data-go],[data-h],[data-t],[data-x],[data-m],[data-a],[data-id],#apply,#add")||e.target;
+ if(!t.closest(".dr")&&!t.closest(".mdl")&&$("dr").className==="dr open"){$("dr").className="dr"}
+ if(t.dataset.x==="md"){closeM();return}
+ var r=t.closest("[data-id]");if(r&&!t.dataset.a&&!t.dataset.m){drawer(r.dataset.id);return}
  if(t.dataset.v){view(t.dataset.v);return}
  if(t.dataset.go){view(t.dataset.go);return}
- if(t.dataset.h){H[t.dataset.h]=1;dash();return}
+ if(t.dataset.h){DB[DI].w=DB[DI].w.filter(function(k){return k!==t.dataset.h});save();dash();return}
  if(t.dataset.t){toast(t.dataset.t);return}
  if(t.dataset.x){$("dr").className="dr";return}
- if(t.dataset.m){mod(t);return}
- if(t.id==="add"){toast("Novo painel em breve");return}
- if(t.id==="apply"){F={s:$("fs").value,p:+$("fp").value,g:$("fg").value};H={};dash();toast("Filtro aplicado");return}
- var a=t.dataset.a;if(a){var x=AL.filter(function(z){return z.id===t.dataset.id})[0];
+ if(t.dataset.m){if(!mod2(t))mod(t);return}
+ if(t.id==="add"){openPanel(0);return}
+ if(t.id==="apply"){applyF();return}
+ var a=t.dataset.a;if(a){var x=aby(t.dataset.id);
   if(a==="iso"){x.st="Contido";C[x.i].s="ok";api("/api/alerts/"+x.id+"/isolate",{});toast("Host "+C[x.i].n+" isolado da rede")}
   if(a==="ip")toast("IP "+x.ip+" bloqueado no firewall");
   if(a==="cl"){x.st="Fechado";api("/api/alerts/"+x.id+"/close",{});toast("Alerta "+x.id+" fechado")}
-  drawer(x.id);if(V==="dash")dash();if(V==="alerts")listA()}});
-document.addEventListener("keydown",function(e){if(e.key==="Escape")$("dr").className="dr"});
+  if(a==="wb"){var w=caseOf(x.id)||newCase(x.n,[x.id],"Você");WS=w.id;$("dr").className="dr";view("wb");return}
+  drawer(x.id);if(V==="dash")dash();if(V==="alerts")listA();if(V==="comps")renderComps()}});
+document.addEventListener("input",function(e){if(e.target.id==="cq")renderComps();if(e.target.id==="wq")renderWb()});
+document.addEventListener("change",function(e){var i=e.target.id;if(i==="cst")renderComps();if(i==="wsv")renderWb();if(i==="wow"){var c=csby(WS);c.ow=e.target.value;hist(c,"Responsável alterado para "+c.ow);save();renderWb()}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"){$("dr").className="dr";closeM()}});
+var SEL={},DB=[{id:"d0",n:"Padrão",w:["al","pc","ev","us"]}],DI=0,CS=[],CN=100,WS=null,WF="Todos",CF="Todos",PE=0,STS=["Aberto","Em investigação","Resolvido"],WN={al:"Status de alertas",pc:"Status dos computadores",ev:"Eventos por hora",us:"Usuário",tp:"Computadores com mais alertas",cs:"Casos do Workbench",lg:"Ações recentes"};
+try{var z=JSON.parse(localStorage.getItem("argus"));if(z){SEL=z.SEL||{};DB=z.DB||DB;DI=Math.min(z.DI||0,DB.length-1);CS=z.CS||[];CN=z.CN||100}}catch(e){}
+function save(){try{localStorage.setItem("argus",JSON.stringify({SEL:SEL,DB:DB,DI:DI,CS:CS,CN:CN}))}catch(e){}}
+function sg(p){return'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>'}
+var IS=sg('<rect x="3" y="3" width="18" height="7" rx="1.5"/><rect x="3" y="14" width="18" height="7" rx="1.5"/><path d="M7 6.5h.01M7 17.5h.01M12 6.5h5M12 17.5h5"/>'),IW=sg('<rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/>');
+function t1(t){var s=t==="Servidor";return'<span class="t1 '+(s?"sv":"ws")+'" title="'+t+'">'+(s?IS:IW)+'</span>'}
+function ti(t){var s=t==="Servidor";return'<span class="ty '+(s?"sv":"ws")+'">'+(s?IS:IW)+t+'</span>'}
+function aby(id){return AL.filter(function(a){return a.id===id})[0]}
+function csby(id){return CS.filter(function(c){return c.id===id})[0]}
+function caseOf(id){return CS.filter(function(c){return c.a.indexOf(id)>-1})[0]}
+function hist(c,m){c.h.unshift([now(),m])}
+function newCase(t,ids,ow){var c={id:"WB-"+(++CN),n:t,a:ids.slice(),st:"Aberto",ow:ow,t:now(),nt:[],h:[]};hist(c,"Caso criado com "+ids.length+" alerta(s)");CS.unshift(c);WS=c.id;save();return c}
+var TC=[[/reconhec/i,"Reconhecimento"],[/offline|integridade|desatualizado/i,"Evasão de defesa"],[/powershell/i,"Execução"],[/ransomware/i,"Impacto"],[/força bruta|login/i,"Acesso a credenciais"],[/administrador/i,"Persistência"],[/remoto/i,"Comando e controle"]];
+function tac(c){var o=[];c.a.map(aby).forEach(function(a){if(a)TC.forEach(function(r){if(r[0].test(a.n)&&o.indexOf(r[1])<0)o.push(r[1])})});return o}
+function sevOf(c){return c.a.map(aby).some(function(a){return a&&a.s==="cr"})?"cr":"wa"}
+function chosts(c){var o=[];c.a.forEach(function(id){var a=aby(id);if(a&&o.indexOf(a.i)<0)o.push(a.i)});return o}
+function owners(c){var o=U.filter(function(u){return u.on}).map(function(u){return u.n});if(c&&o.indexOf(c.ow)<0)o.push(c.ow);return o}
+function seed(){[["Reconhecimento e varredura de rede",["AL-2040","AL-2041"],"Em investigação","Você"],["Defesas desativadas em hosts críticos",["AL-2042","AL-2043"],"Aberto","Carlos Lima"],["Execução suspeita e ransomware",["AL-2045","AL-2046"],"Aberto","Ana Souza"],["Acesso indevido e persistência",["AL-2044","AL-2047","AL-2049"],"Aberto","Você"]].forEach(function(s){if(s[1].every(aby)){var c=newCase(s[0],s[1],s[3]);c.st=s[2]}});WS=null;save()}
+function modal(h){$("md").innerHTML='<div class="bd" data-x="md"></div><div class="mb">'+h+'</div>';$("md").hidden=false}
+function closeM(){$("md").hidden=true}
+function openPanel(ed){PE=ed;var d=ed?DB[DI]:{n:"",w:["al","pc"]};
+ modal('<h2>'+(ed?"Widgets do painel":"Novo painel")+'</h2><input class="in" id="pn" placeholder="Nome do painel" maxlength="24" value="'+esc(d.n)+'">'+Object.keys(WN).map(function(k){return'<label class="ck"><input type="checkbox" value="'+k+'"'+(d.w.indexOf(k)>-1?" checked":"")+'>'+WN[k]+'</label>'}).join("")+'<div class="act" style="margin-top:14px"><button data-x="md">Cancelar</button><button class="p" data-m="ps">'+(ed?"Salvar":"Criar painel")+'</button></div>')}
+function ncModal(pre){var o=AL.filter(function(a){return a.st!=="Fechado"});
+ modal('<h2>Novo caso</h2><input class="in" id="nct" placeholder="Título do caso (opcional)" maxlength="80"><select id="nco">'+owners().map(function(n){return'<option>'+esc(n)+'</option>'}).join("")+'</select><div class="lh"><span>Alertas do caso</span></div>'+(o.map(function(a){return'<label class="ck"><input type="checkbox" value="'+a.id+'"'+(pre.indexOf(a.id)>-1?" checked":"")+'><i class="dot '+a.s+'" style="margin:0"></i>'+a.id+' · '+a.n+' · '+C[a.i].n+'</label>'}).join("")||'<div class="ag" style="color:var(--mut)">Nenhum alerta aberto.</div>')+'<div class="act" style="margin-top:14px"><button data-x="md">Cancelar</button><button class="p" data-m="ns">Criar caso</button></div>')}
+function cvis(){var q=$("cq").value.toLowerCase(),st=$("cst").value,v=[];C.forEach(function(c,i){if((CF==="Todos"||c.t===CF)&&(st==="Todos"||c.s===st)&&c.n.indexOf(q)>-1)v.push(i)});return v}
+function renderComps(){
+ if(!$("cq"))$("v-comps").innerHTML='<div class="w"><div class="wh">Computadores</div><div class="fb"><span id="cch" style="display:flex;gap:6px;flex-wrap:wrap"></span><select id="cst"><option value="Todos">Todos os status</option>'+ST.map(function(k){return'<option value="'+k+'">'+SN[k]+'</option>'}).join("")+'</select><input class="in" id="cq" placeholder="Buscar por nome"></div><div class="bulk" id="bk"></div><div class="tw"><table><thead><tr><th><input type="checkbox" id="ca" data-m="sa" aria-label="Selecionar todos"></th><th>Nome</th><th>Tipo</th><th>Status</th><th>Alertas abertos</th></tr></thead><tbody id="tbc"></tbody></table></div></div>';
+ var v=cvis(),ac={},ns=Object.keys(SEL).length,sv=C.filter(function(c){return SEL[c.n]&&c.t==="Servidor"}).length,vs=v.filter(function(i){return SEL[C[i].n]}).length;
+ AL.forEach(function(a){if(a.st!=="Fechado")ac[a.i]=(ac[a.i]||0)+1});
+ $("cch").innerHTML=["Todos","Servidor","Estação"].map(function(f){return'<button class="chip'+(f===CF?" on":"")+'" data-m="ct" data-f="'+f+'">'+(f==="Todos"?"Todos":f==="Servidor"?"Servidores":"Estações")+'</button>'}).join("");
+ $("tbc").innerHTML=v.map(function(i){var c=C[i],s=SEL[c.n]?1:0;return'<tr class="row'+(s?" sel":"")+'" data-m="sc" data-i="'+i+'"><td><input type="checkbox" data-m="sc" data-i="'+i+'"'+(s?" checked":"")+' aria-label="Selecionar '+c.n+'"></td><td>'+c.n+'</td><td>'+ti(c.t)+'</td><td><i class="dot '+c.s+'"></i>'+SN[c.s]+'</td><td>'+(ac[i]||0)+'</td></tr>'}).join("")||'<tr><td colspan="5" style="color:var(--mut)">Nenhum computador encontrado.</td></tr>';
+ $("ca").checked=v.length>0&&vs===v.length;$("ca").indeterminate=vs>0&&vs<v.length;
+ $("bk").innerHTML='<span class="n">'+ns+' selecionado(s)'+(ns?' · '+sv+' servidor(es) · '+(ns-sv)+' estação(ões)':"")+'</span><button class="chip" data-m="qs" data-f="Servidor">+ Servidores</button><button class="chip" data-m="qs" data-f="Estação">+ Estações</button><button class="chip" data-m="qs" data-f="cr">+ Críticos</button>'+[["use","Filtrar painel","ap"],["iso","Isolar","chip"],["scan","Varredura","chip"],["case","Criar caso","chip"],["clr","Limpar","chip"]].map(function(b){return'<button class="'+b[2]+'" data-m="bk" data-f="'+b[0]+'"'+(ns?"":" disabled")+'>'+b[1]+'</button>'}).join("")}
+function renderWb(){
+ if(!$("wq"))$("v-wb").innerHTML='<div class="wb"><div class="w"><div class="wh">Workbench<button class="ap" style="margin-left:auto" data-m="nc">+ Novo caso</button></div><div class="fb" id="wch" style="margin-bottom:10px"></div><div class="fb"><input class="in" id="wq" placeholder="Buscar caso, host ou alerta" style="flex:1"><select id="wsv"><option value="Todos">Todas as severidades</option><option value="cr">Crítico</option><option value="wa">Aviso</option></select></div><div id="wl"></div></div><div class="w" id="wd"></div></div>';
+ var q=$("wq").value.toLowerCase(),sv=$("wsv").value,L=CS.filter(function(c){return(WF==="Todos"||c.st===WF)&&(sv==="Todos"||sevOf(c)===sv)&&(!q||(c.id+c.n+c.a.join(" ")+chosts(c).map(function(i){return C[i].n}).join(" ")).toLowerCase().indexOf(q)>-1)});
+ $("wch").innerHTML=["Todos"].concat(STS).map(function(s){return'<button class="chip'+(s===WF?" on":"")+'" data-m="wf" data-f="'+s+'">'+s+' '+CS.filter(function(c){return s==="Todos"||c.st===s}).length+'</button>'}).join("");
+ var cur=csby(WS);if(!cur||L.indexOf(cur)<0){cur=L[0];WS=cur?cur.id:null}
+ $("wl").innerHTML=L.map(function(c){return'<div class="cs'+(c===cur?" on":"")+'" data-m="ws" data-k="'+c.id+'"><i class="dot '+sevOf(c)+'"></i><b>'+c.id+'</b> '+esc(c.n)+'<small>'+chosts(c).length+' host(s) · '+c.a.length+' alerta(s) · '+esc(c.ow)+' · '+c.st+'</small></div>'}).join("")||'<div style="color:var(--mut)">Nenhum caso encontrado. Use + Novo caso.</div>';
+ $("wd").innerHTML=cur?wdet(cur):'<div style="color:var(--mut)">Selecione ou crie um caso para investigar.</div>'}
+function wdet(c){var op=AL.filter(function(a){return a.st!=="Fechado"&&!caseOf(a.id)});
+ return'<div class="wh">'+c.id+'<span class="b '+sevOf(c)+'">'+SN[sevOf(c)]+'</span></div><h2 style="margin:0 0 10px;font-size:17px">'+esc(c.n)+'</h2>'+
+ '<div class="act" style="margin-bottom:12px">'+STS.map(function(s){return'<button class="'+(s===c.st?"p":"")+'" data-m="wst" data-f="'+s+'">'+s+'</button>'}).join("")+'</div>'+
+ '<div class="kv" style="margin-bottom:12px"><span>Responsável</span><select id="wow">'+owners(c).map(function(n){return'<option'+(n===c.ow?" selected":"")+'>'+esc(n)+'</option>'}).join("")+'</select><span>Táticas</span><b>'+(tac(c).join(", ")||"Não classificado")+'</b><span>Criado</span><b>'+c.t+'</b></div>'+
+ '<div class="lh"><span>Escopo de impacto</span></div>'+chosts(c).map(function(i){var h=C[i];return'<div class="al" style="cursor:default">'+ti(h.t)+'<span class="nm" style="color:var(--tx)">'+h.n+'</span><i class="dot '+h.s+'" style="margin:0"></i><span class="ag">'+SN[h.s]+'</span><button class="chip" data-m="wi" data-i="'+i+'">Isolar</button></div>'}).join("")+
+ '<div class="lh" style="margin-top:12px"><span>Alertas relacionados</span></div>'+c.a.map(aby).filter(Boolean).map(function(a){return'<div class="al" data-id="'+a.id+'"><i class="dot '+a.s+'" style="margin:0"></i><span class="nm">'+a.n+'</span><span class="ag">'+a.st+'</span><button class="rm" data-m="wr" data-k="'+a.id+'" aria-label="Remover do caso">×</button></div>'}).join("")+
+ (op.length?'<div class="fb" style="margin:8px 0 0"><select id="wad" style="flex:1;min-width:0">'+op.map(function(a){return'<option value="'+a.id+'">'+a.id+' · '+a.n+'</option>'}).join("")+'</select><button class="chip" data-m="wa">Adicionar alerta</button></div>':"")+
+ '<div class="lh" style="margin-top:14px"><span>Notas do analista</span></div><textarea class="in" id="wnt" placeholder="Registre achados, hipóteses e decisões"></textarea><button class="chip" data-m="wn">Salvar nota</button>'+c.nt.map(function(n){return'<div class="nt"><small>'+n[0]+'</small>'+esc(n[1])+'</div>'}).join("")+
+ '<div class="lh" style="margin-top:14px"><span>Linha do tempo</span></div><div class="tl">'+c.h.map(function(h){return'<div><small>'+h[0]+'</small>'+esc(h[1])+'</div>'}).join("")+'</div>'+
+ '<div class="act"><button class="p" data-m="wiall">Isolar hosts</button><button data-m="wbip">Bloquear IPs</button><button data-m="wcl">Fechar alertas</button><button data-m="wex">Copiar resumo</button></div>'}
+function iso(h,c){h.s="ok";LOG.unshift([now(),"Host isolado",h.n]);api("/api/actions/isolate",{host:h.n});hist(c,"Host "+h.n+" isolado da rede")}
+function mod2(t){var m=t.dataset.m,i=+t.dataset.i,k=t.dataset.k,f=t.dataset.f,c=csby(WS),RW=function(){save();renderWb()};
+ if(m==="dp"){DI=i;save();dtabs();dash(1);return 1}
+ if(m==="pe"){openPanel(1);return 1}
+ if(m==="pd"){if(DI&&confirm("Excluir o painel "+DB[DI].n+"?")){DB.splice(DI,1);DI=0;save();dtabs();dash(1);toast("Painel excluído")}return 1}
+ if(m==="ps"){var n=$("pn").value.trim(),w=[].map.call(document.querySelectorAll("#md .ck input:checked"),function(x){return x.value});
+  if(!n){toast("Dê um nome ao painel");return 1}if(!w.length){toast("Escolha ao menos um widget");return 1}
+  if(PE){DB[DI].n=n;DB[DI].w=w}else{DB.push({id:"d"+Date.now(),n:n,w:w});DI=DB.length-1}
+  save();closeM();dtabs();dash(1);toast(PE?"Painel atualizado":"Painel "+n+" criado");return 1}
+ if(m==="pf"){var me=U.filter(function(u){return u.n==="Você"})[0]||{};modal('<h2>Editar perfil</h2><select id="pfr">'+["Analista SOC N1","Analista SOC N2","Auditor","Administrador"].map(function(r){return'<option'+(r===me.r?" selected":"")+'>'+r+'</option>'}).join("")+'</select><div class="act"><button data-x="md">Cancelar</button><button class="p" data-m="pfs">Salvar</button></div>');return 1}
+ if(m==="pfs"){var u=U.filter(function(x){return x.n==="Você"})[0];if(u)u.r=$("pfr").value;api("/api/users/me",{role:$("pfr").value});closeM();dash();toast("Perfil atualizado");return 1}
+ if(m==="ct"){CF=f;renderComps();return 1}
+ if(m==="sc"){var h=C[i].n;if(SEL[h])delete SEL[h];else SEL[h]=1;save();renderComps();return 1}
+ if(m==="sa"){var v=cvis(),all=v.every(function(j){return SEL[C[j].n]});v.forEach(function(j){if(all)delete SEL[C[j].n];else SEL[C[j].n]=1});save();renderComps();return 1}
+ if(m==="qs"){C.forEach(function(h){if(f==="cr"?h.s==="cr":h.t===f)SEL[h.n]=1});save();renderComps();return 1}
+ if(m==="bk"){var s=C.filter(function(h){return SEL[h.n]});
+  if(f==="use"){F.g="Selecionados";view("dash");toast("Painel filtrado por "+s.length+" host(s)");return 1}
+  if(f==="clr")SEL={};
+  if(f==="iso"||f==="scan"){s.forEach(function(h){if(f==="iso")h.s="ok";LOG.unshift([now(),f==="iso"?"Host isolado":"Varredura iniciada",h.n]);api("/api/actions/"+(f==="iso"?"isolate":"scan"),{host:h.n})});toast((f==="iso"?"Hosts isolados: ":"Varredura iniciada em ")+s.length)}
+  if(f==="case"){var ids=AL.filter(function(a){return a.st!=="Fechado"&&SEL[C[a.i].n]}).map(function(a){return a.id});if(!ids.length){toast("Nenhum alerta aberto nos hosts selecionados");return 1}ncModal(ids);return 1}
+  save();renderComps();return 1}
+ if(m==="nc"){ncModal([]);return 1}
+ if(m==="ns"){var d=[].map.call(document.querySelectorAll("#md .ck input:checked"),function(x){return x.value});if(!d.length){toast("Selecione ao menos um alerta");return 1}
+  var cc=newCase($("nct").value.trim()||"Investigação: "+aby(d[0]).n,d,$("nco").value);closeM();WF="Todos";view("wb");toast(cc.id+" criado");return 1}
+ if(m==="ws"){WS=k;renderWb();return 1}
+ if(m==="wo"){WS=k;WF="Todos";if($("wq")){$("wq").value="";$("wsv").value="Todos"}view("wb");return 1}
+ if(m==="wf"){WF=f;renderWb();return 1}
+ if(!c)return 0;
+ if(m==="wst"){c.st=f;hist(c,"Status alterado para "+f);RW();toast(c.id+": "+f);return 1}
+ if(m==="wi"){iso(C[i],c);RW();toast("Host "+C[i].n+" isolado da rede");return 1}
+ if(m==="wiall"){var hs=chosts(c);hs.forEach(function(j){iso(C[j],c)});RW();toast(hs.length+" host(s) isolado(s)");return 1}
+ if(m==="wbip"){var ips=[];c.a.forEach(function(id){var a=aby(id);if(a&&ips.indexOf(a.ip)<0)ips.push(a.ip)});ips.forEach(function(p){LOG.unshift([now(),"IP bloqueado",p]);api("/api/actions/block-ip",{ip:p})});hist(c,"IPs bloqueados: "+ips.join(", "));RW();toast(ips.length+" IP(s) bloqueado(s)");return 1}
+ if(m==="wcl"){c.a.forEach(function(id){var a=aby(id);if(a){a.st="Fechado";api("/api/alerts/"+id+"/close",{})}});c.st="Resolvido";hist(c,"Alertas fechados e caso resolvido");RW();toast("Alertas fechados, caso resolvido");return 1}
+ if(m==="wr"){c.a=c.a.filter(function(x){return x!==k});hist(c,"Alerta "+k+" removido do caso");RW();return 1}
+ if(m==="wa"){var id=$("wad").value;c.a.push(id);hist(c,"Alerta "+id+" adicionado");RW();return 1}
+ if(m==="wn"){var x=$("wnt").value.trim();if(!x){toast("Escreva a nota");return 1}c.nt.unshift([now(),x]);hist(c,"Nota adicionada");RW();return 1}
+ if(m==="wex"){var tx=[c.id+" - "+c.n,"Status: "+c.st+" | Responsável: "+c.ow,"Hosts: "+chosts(c).map(function(j){return C[j].n}).join(", "),"Alertas: "+c.a.join(", ")].concat(c.nt.map(function(n){return"Nota: "+n[1]})).join("\n");
+  try{navigator.clipboard.writeText(tx).then(function(){toast("Resumo copiado")},function(){toast("Não foi possível copiar")})}catch(e){toast("Não foi possível copiar")}return 1}
+ return 0}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 var LOG=[],EF="Todos",TH=0,RT=90;
 var P=[["Firewall","Controle de tráfego de entrada e saída",1,"Prevenir"],["Prevenção de intrusão (IPS)","Bloqueia exploits conhecidos",1,"Prevenir"],["Anti-malware","Varredura em tempo real",1,"Prevenir"],["Monitor de integridade","Detecta alteração de arquivos críticos",0,"Detectar"],["Controle de aplicativos","Bloqueia software fora da lista",0,"Detectar"],["Inspeção de logs","Analisa logs do sistema",1,"Detectar"]].map(function(p){return{n:p[0],d:p[1],on:p[2],m:p[3]}});
@@ -212,7 +363,8 @@ function mod(t){var m=t.dataset.m,i=+t.dataset.i;
  if(m==="th"){TH=(TH+1)%3;var d=document.documentElement;if(TH===0)d.removeAttribute("data-theme");else d.setAttribute("data-theme",TH===1?"light":"dark");renderAdm();return}
  if(m==="rt"){RT=RT===30?90:RT===90?180:30;renderAdm();toast("Retenção de logs: "+RT+" dias")}}
 function api(p,b){try{fetch(p,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(b)})}catch(e){}}
-fetch("/api/state").then(function(r){return r.json()}).then(function(d){C=d.computers;AL=d.alerts;P=d.policies;U=d.users;LOG=d.log;view("dash")}).catch(function(){view("dash")});
+function boot(){if(!CS.length)seed();view("dash")}
+fetch("/api/state").then(function(r){return r.json()}).then(function(d){C=d.computers;AL=d.alerts;P=d.policies;U=d.users;LOG=d.log;boot()}).catch(boot);
 </script>
 </body>
 </html>
